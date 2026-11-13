@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html lang="en" class="js">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Techfest 3D — Into the Innovation Universe</title>
+  <meta name="description" content="A 3D interactive concept website for Techfest, IIT Bombay — scroll-driven 3D flight, interactive objects and dynamic transitions." />
+  <meta name="theme-color" content="#090317" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Unbounded:wght@400;600;800;900&family=Space+Grotesk:wght@400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="style.css" />
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpath d='M16 2 29 9.5v13L16 30 3 22.5v-13Z' fill='none' stroke='%23a78bfa' stroke-width='2.5'/%3E%3Ccircle cx='16' cy='16' r='5' fill='%2322d3ee'/%3E%3C/svg%3E" />
+
+  <!-- Three.js (pinned version) via import map -->
+  <script type="importmap">
+    {
+      "imports": {
+        "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js",
+        "three/addons/": "https://cdn.jsdelivr.net/npm/three@0.160.0/examples/jsm/"
+      }
+    }
+  </script>
+  <!-- Safety net: if the 3D engine can't load, still show the content -->
+  <script>
+    setTimeout(function () {
+      if (!document.body.classList.contains("is-ready")) {
+        document.documentElement.classList.remove("js");
+        document.body.classList.add("is-ready", "no-webgl");
+      }
+    }, 9000);
+  </script>
+</head>
+<body>
+
+  <!-- ============ LOADER ============ -->
+  <div class="loader" id="loader" aria-hidden="true">
+    <div class="loader__orb"><span></span><span></span><span></span></div>
+    <p class="loader__brand">TECHFEST</p>
+    <p class="loader__pct"><span id="loadPct">0</span>%</p>
+    <p class="loader__msg">Assembling the universe…</p>
+  </div>
+
+  <!-- ============ 3D + OVERLAYS ============ -->
+  <canvas id="webgl" aria-hidden="true"></canvas>
+  <div class="noise" aria-hidden="true"></div>
+  <div class="cursor" id="cursor" aria-hidden="true"></div>
+  <div class="tooltip" id="tooltip" aria-hidden="true"></div>
+  <div class="progress" aria-hidden="true"><span id="progressBar"></span></div>
+
+  <!-- ============ NAV ============ -->
+  <header class="nav">
+    <a href="#home" class="nav__brand" aria-label="Techfest 3D home">
+      <svg viewBox="0 0 32 32" width="30" height="30" aria-hidden="true">
+        <path d="M16 2 29 9.5v13L16 30 3 22.5v-13Z" fill="none" stroke="currentColor" stroke-width="2"/>
+        <circle cx="16" cy="16" r="5" fill="#22d3ee"/>
+      </svg>
+      <span>TECHFEST <small>3D</small></span>
+    </a>
+    <nav class="nav__links" aria-label="Primary">
+      <a href="#compete">Compete</a>
+      <a href="#build">Workshops</a>
+      <a href="#listen">Lectures</a>
+      <a href="#explore">Exhibitions</a>
+    </nav>
+    <a href="#launch" class="btn btn--small">Register</a>
+  </header>
+
+  <nav class="dots" aria-label="Section navigation">
+    <button data-label="Home" aria-label="Go to Home"></button>
+    <button data-label="Compete" aria-label="Go to Competitions"></button>
+    <button data-label="Workshops" aria-label="Go to Workshops"></button>
+    <button data-label="Lectures" aria-label="Go to Lectures"></button>
+    <button data-label="Exhibitions" aria-label="Go to Exhibitions"></button>
+    <button data-label="Launch" aria-label="Go to Register"></button>
+  </nav>
+
+  <main>
+    <!-- 0 · HERO -->
+    <section class="sec sec--hero" id="home" data-side="center">
+      <div class="panel panel--hero">
+        <p class="eyebrow">IIT Bombay presents</p>
+        <h1 class="hero-title" id="heroTitle">
+          <span class="hero-title__solid">TECH</span>
+          <span class="hero-title__outline">FEST</span>
+        </h1>
+        <p class="hero-sub">Asia's Largest Science &amp; Technology Festival</p>
+        <div class="cta">
+          <a href="#compete" class="btn">Begin the journey</a>
+          <button class="btn btn--ghost" data-open="core">What is Techfest?</button>
+        </div>
+        <p class="hint"><span class="hint__mouse"></span> Scroll to fly · Drag to spin · Click any object</p>
+      </div>
+    </section>
+
+    <!-- 1 · COMPETITIONS -->
+    <section class="sec" id="compete" data-side="left">
+      <div class="panel">
+        <p class="eyebrow"><span>01</span> Compete</p>
+        <h2>Competitions</h2>
+        <p>Robots clash, code races the clock and wild ideas fight for glory. Take on challenges in robotics, coding, AI, drones and design — and prove your build is the best on the planet.</p>
+        <ul class="tags">
+          <li>Robowars</li><li>Hackathons</li><li>Drone Racing</li><li>Ideation</li>
+        </ul>
+        <button class="btn btn--ghost" data-open="compete">Enter the arena →</button>
+      </div>
+    </section>
+
+    <!-- 2 · WORKSHOPS -->
+    <section class="sec" id="build" data-side="right">
+      <div class="panel">
+        <p class="eyebrow"><span>02</span> Build</p>
+        <h2>Workshops</h2>
+        <p>Learn by building. Hands-on sessions with industry experts — from training neural networks to soldering your first IoT board. Watch the cube assemble itself as you scroll.</p>
+        <ul class="tags">
+          <li>AI / ML</li><li>Ethical Hacking</li><li>IoT</li><li>Quantum</li>
+        </ul>
+        <button class="btn btn--ghost" data-open="build">See all workshops →</button>
+      </div>
+    </section>
+
+    <!-- 3 · LECTURES -->
+    <section class="sec" id="listen" data-side="left">
+      <div class="panel">
+        <p class="eyebrow"><span>03</span> Listen</p>
+        <h2>Lectures</h2>
+        <p>World-renowned scientists, astronauts, founders and visionaries share the ideas that will shape the next century. Big questions, live on stage.</p>
+        <ul class="tags">
+          <li>Science</li><li>Space</li><li>Startups</li><li>Future Tech</li>
+        </ul>
+        <button class="btn btn--ghost" data-open="listen">Meet the speakers →</button>
+      </div>
+    </section>
+
+    <!-- 4 · EXHIBITIONS -->
+    <section class="sec" id="explore" data-side="right">
+      <div class="panel">
+        <p class="eyebrow"><span>04</span> Explore</p>
+        <h2>Exhibitions</h2>
+        <p>Walk among humanoid robots, defence tech, space hardware and inventions from around the world. <strong>Click a floating exhibit</strong> to learn more about it.</p>
+        <ul class="tags">
+          <li>Robotics</li><li>Space</li><li>Defence</li><li>Health</li>
+        </ul>
+        <button class="btn btn--ghost" data-open="explore">Tour the expo →</button>
+      </div>
+    </section>
+
+    <!-- 5 · LAUNCH -->
+    <section class="sec sec--final" id="launch" data-side="center">
+      <div class="panel panel--final">
+        <p class="eyebrow"><span>05</span> Launch</p>
+        <h2>Step through<br />the portal</h2>
+        <p>Join thousands of students, makers and dreamers at IIT Bombay. Your journey into the future starts here.</p>
+        <div class="cta">
+          <a href="https://techfest.org" target="_blank" rel="noopener" class="btn">Register on techfest.org ↗</a>
+          <a href="#home" class="btn btn--ghost">Back to start ↑</a>
+        </div>
+      </div>
+      <footer class="foot">
+        Fan-made 3D concept for the Techfest Campus Ambassador task · Built with Three.js by Vijayavani K
+      </footer>
+    </section>
+  </main>
+
+  <!-- ============ MODAL ============ -->
+  <div class="modal" id="modal" aria-hidden="true">
+    <div class="modal__backdrop" data-close></div>
+    <div class="modal__card" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+      <button class="modal__close" id="modalClose" aria-label="Close" data-close>×</button>
+      <p class="eyebrow" id="modalTag"></p>
+      <h3 id="modalTitle"></h3>
+      <p id="modalBody"></p>
+      <ul class="modal__list" id="modalList"></ul>
+      <a class="btn" id="modalLink" target="_blank" rel="noopener" hidden></a>
+    </div>
+  </div>
+
+  <noscript><p class="noscript">Enable JavaScript to experience the 3D universe.</p></noscript>
+  <script type="module" src="main.js"></script>
+</body>
+</html>
